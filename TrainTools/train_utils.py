@@ -28,8 +28,6 @@ def train_single_epoch(
     loss_list = []
 
     for _ in tqdm(range(steps), total=steps):
-        optimizer.zero_grad(set_to_none=True)
-
         Cwid, Ccid, Qwid, Qcid, y1, y2, _ = next(data_iter)
         Cwid, Ccid = Cwid.to(device), Ccid.to(device)
         Qwid, Qcid = Qwid.to(device), Qcid.to(device)

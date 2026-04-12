@@ -57,10 +57,11 @@ def get_best_span(p1, p2, max_len=15):
     best_e = []
 
     for b in range(batch_size):
-        scores = p1[b].unsqueeze(1) + p2[b].unsqueeze(0)  # [L, L]
-        scores = torch.triu(scores)
+        scores = p1[b].unsqueeze(1) + p2[b].unsqueeze(0)
+        mask = torch.triu(torch.ones(c_len, c_len, device=scores.device, dtype=torch.bool))
         if max_len is not None:
-            scores = torch.tril(scores, diagonal=max_len - 1)
+            mask = mask & torch.tril(torch.ones_like(mask), diagonal=max_len - 1).bool()
+        scores = scores.masked_fill(~mask, float('-inf'))
 
         flat_idx = torch.argmax(scores)
         s = flat_idx // c_len

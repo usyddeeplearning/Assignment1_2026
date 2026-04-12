@@ -35,7 +35,7 @@ def kaiming_uniform_(tensor: torch.Tensor, mode: str = "fan_in") -> torch.Tensor
     """
     fan_in, fan_out = _calculate_fan(tensor)
     fan = fan_in if mode == "fan_in" else fan_out
-    std = math.sqrt(1.0 / fan)
+    std = math.sqrt(2.0 / fan)
     bound = math.sqrt(3.0) * std
     with torch.no_grad():
         tensor.uniform_(-bound, bound)
